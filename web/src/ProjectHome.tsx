@@ -307,6 +307,7 @@ export default function ProjectHome({ locale, onLocaleChange }: ProjectHomeProps
 
     <main>
       <section className="project-hero" aria-labelledby="project-title">
+        <img className="project-hero-image" src="/assets/industrial-workshop-hero.svg" alt={t.heroImageAlt} />
         <div className="project-hero-telemetry" aria-label={locale === 'zh' ? '系统遥测状态' : 'System telemetry'}>
           <span><i className="telemetry-led" />{t.telemetryKernel}</span>
           <span><b>{t.telemetrySite}</b><strong>{siteConfig.site_id}</strong></span>
