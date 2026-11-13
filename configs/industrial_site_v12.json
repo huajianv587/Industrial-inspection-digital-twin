@@ -1,0 +1,173 @@
+{
+  "site_id": "IND-PLANT-001",
+  "site_name": "示例连续工艺车间 A 区",
+  "robot": {
+    "robot_id": "unitree-sim-01",
+    "model": "Quadruped inspection adapter (simulation)",
+    "asset_status": "procedural_proxy"
+  },
+  "industrial_profile": {
+    "plant_type": "steam_and_cooling_utilities",
+    "coordinate_system": "local_plant_xy_z_up",
+    "unit_system": "metre_celsius_bar",
+    "model_revision": "IND-PLANT-001-R00",
+    "operating_mode": "commissioning_simulation"
+  },
+  "zones": [
+    {"zone_id": "UTIL-A", "name": "蒸汽与分离器区", "access": "controlled"},
+    {"zone_id": "UTIL-B", "name": "换热与过滤区", "access": "controlled"},
+    {"zone_id": "ELEC-B", "name": "低压配电区", "access": "restricted"},
+    {"zone_id": "SAFE-C", "name": "消防与应急设施区", "access": "controlled"},
+    {"zone_id": "MRO-C", "name": "维护与备件区", "access": "controlled"}
+  ],
+  "assets": [
+    {
+      "asset_id": "AST-PIPE-302",
+      "asset_type": "steam_header",
+      "display_name": "蒸汽主管道压力表与隔离阀组",
+      "zone_id": "UTIL-A",
+      "model_asset": "procedural://process_header/steam_302",
+      "model_status": "procedural_proxy",
+      "inspection_points": [
+        {"point_id": "PI-302", "measurement": "pressure", "required": true},
+        {"point_id": "XV-302", "measurement": "valve_position", "required": true},
+        {"point_id": "FL-302", "measurement": "flange_leak", "required": true}
+      ]
+    },
+    {
+      "asset_id": "AST-VESSEL-101",
+      "asset_type": "vertical_separator",
+      "display_name": "V-101 立式分离器",
+      "zone_id": "UTIL-A",
+      "model_asset": "procedural://pressure_vessel/V-101",
+      "model_status": "procedural_proxy",
+      "inspection_points": [
+        {"point_id": "PI-101", "measurement": "pressure", "required": true},
+        {"point_id": "DR-101", "measurement": "drain_condition", "required": true},
+        {"point_id": "LS-101", "measurement": "shell_surface", "required": true}
+      ]
+    },
+    {
+      "asset_id": "AST-CAB-108",
+      "asset_type": "low_voltage_switchboard",
+      "display_name": "低压配电柜 MCC-04",
+      "zone_id": "ELEC-B",
+      "model_asset": "procedural://electrical_mcc/MCC-04",
+      "model_status": "procedural_proxy",
+      "inspection_points": [
+        {"point_id": "MCC-04-DOOR", "measurement": "door_state", "required": true},
+        {"point_id": "MCC-04-T", "measurement": "thermal_surface", "required": true},
+        {"point_id": "MCC-04-L", "measurement": "pilot_lamps", "required": true}
+      ]
+    },
+    {
+      "asset_id": "AST-PUMP-021",
+      "asset_type": "centrifugal_pump",
+      "display_name": "循环泵组 P-021",
+      "zone_id": "UTIL-B",
+      "model_asset": "procedural://pump_skid/P-021",
+      "model_status": "procedural_proxy",
+      "inspection_points": [
+        {"point_id": "P-021-VIB", "measurement": "vibration_proxy", "required": true},
+        {"point_id": "P-021-T", "measurement": "motor_temperature", "required": true},
+        {"point_id": "P-021-L", "measurement": "seal_leak", "required": true}
+      ]
+    },
+    {
+      "asset_id": "AST-E-201",
+      "asset_type": "shell_tube_exchanger",
+      "display_name": "E-201 壳管式换热器",
+      "zone_id": "UTIL-B",
+      "model_asset": "procedural://heat_exchanger/E-201",
+      "model_status": "procedural_proxy",
+      "inspection_points": [
+        {"point_id": "E-201-T", "measurement": "temperature", "required": true},
+        {"point_id": "E-201-F", "measurement": "flange_condition", "required": true}
+      ]
+    },
+    {
+      "asset_id": "AST-F-301",
+      "asset_type": "filter_pump_skid",
+      "display_name": "F-301 循环水过滤器",
+      "zone_id": "UTIL-B",
+      "model_asset": "procedural://filter_skid/F-301",
+      "model_status": "procedural_proxy",
+      "inspection_points": [
+        {"point_id": "F-301-P", "measurement": "differential_pressure", "required": true},
+        {"point_id": "F-301-V", "measurement": "valve_position", "required": true}
+      ]
+    },
+    {
+      "asset_id": "AST-HVAC-001",
+      "asset_type": "axial_exhaust_fan",
+      "display_name": "北墙轴流排风机",
+      "zone_id": "UTIL-A",
+      "model_asset": "procedural://hvac/axial_fan_001",
+      "model_status": "procedural_proxy",
+      "inspection_points": [
+        {"point_id": "HVAC-001-G", "measurement": "guard_condition", "required": true},
+        {"point_id": "HVAC-001-R", "measurement": "rotation_proxy", "required": true}
+      ]
+    },
+    {
+      "asset_id": "AST-FIRE-001",
+      "asset_type": "fire_hose_reel",
+      "display_name": "东墙消防水带盘",
+      "zone_id": "SAFE-C",
+      "model_asset": "procedural://fire_protection/hose_reel_001",
+      "model_status": "procedural_proxy",
+      "inspection_points": [
+        {"point_id": "FIRE-001-A", "measurement": "access_clearance", "required": true},
+        {"point_id": "FIRE-001-S", "measurement": "seal_condition", "required": true}
+      ]
+    },
+    {
+      "asset_id": "AST-MRO-001",
+      "asset_type": "maintenance_bay",
+      "display_name": "维修工位与备件架",
+      "zone_id": "MRO-C",
+      "model_asset": "procedural://maintenance/workbench_001",
+      "model_status": "procedural_proxy",
+      "inspection_points": [
+        {"point_id": "MRO-001-A", "measurement": "aisle_clearance", "required": true},
+        {"point_id": "MRO-001-S", "measurement": "spill_condition", "required": true}
+      ]
+    },
+    {
+      "asset_id": "AST-CRANE-001",
+      "asset_type": "overhead_crane",
+      "display_name": "上部检修天车",
+      "zone_id": "UTIL-A",
+      "model_asset": "procedural://lifting/overhead_crane_001",
+      "model_status": "procedural_proxy",
+      "inspection_points": [
+        {"point_id": "CRANE-001-H", "measurement": "hook_clearance", "required": true},
+        {"point_id": "CRANE-001-R", "measurement": "runway_condition", "required": true}
+      ]
+    }
+  ],
+  "waypoints": [
+    {"waypoint_id": "WP_01_PIPE", "asset_id": "AST-PIPE-302", "device_id": "DEV-PIPE-302", "device_name": "蒸汽主管道压力表与法兰", "zone": "蒸汽与分离器区", "position": {"x": 4.0, "y": 1.0, "z": 0.0}, "yaw_deg": 90.0, "pressure_max_mpa": 1.2, "warning_temp_c": 55.0, "critical_temp_c": 60.0, "require_door_closed": false},
+    {"waypoint_id": "WP_02_VESSEL", "asset_id": "AST-VESSEL-101", "device_id": "DEV-VESSEL-101", "device_name": "V-101 立式分离器", "zone": "蒸汽与分离器区", "position": {"x": -1.45, "y": 2.90, "z": 0.0}, "yaw_deg": 180.0, "pressure_max_mpa": 1.0, "warning_temp_c": 55.0, "critical_temp_c": 65.0, "require_door_closed": false},
+    {"waypoint_id": "WP_03_CABINET", "asset_id": "AST-CAB-108", "device_id": "DEV-CAB-108", "device_name": "低压配电柜 MCC-04", "zone": "低压配电区", "position": {"x": 8.0, "y": -2.0, "z": 0.0}, "yaw_deg": 180.0, "pressure_max_mpa": null, "warning_temp_c": 55.0, "critical_temp_c": 60.0, "require_door_closed": true},
+    {"waypoint_id": "WP_04_PUMP", "asset_id": "AST-PUMP-021", "device_id": "DEV-PUMP-021", "device_name": "循环泵组 P-021", "zone": "换热与过滤区", "position": {"x": 11.5, "y": 3.5, "z": 0.0}, "yaw_deg": 45.0, "pressure_max_mpa": 1.1, "warning_temp_c": 50.0, "critical_temp_c": 65.0, "require_door_closed": false},
+    {"waypoint_id": "WP_05_EXCHANGER", "asset_id": "AST-E-201", "device_id": "DEV-E-201", "device_name": "E-201 壳管式换热器", "zone": "换热与过滤区", "position": {"x": 14.6, "y": 3.0, "z": 0.0}, "yaw_deg": 90.0, "pressure_max_mpa": 1.0, "warning_temp_c": 58.0, "critical_temp_c": 72.0, "require_door_closed": false},
+    {"waypoint_id": "WP_06_FILTER", "asset_id": "AST-F-301", "device_id": "DEV-F-301", "device_name": "F-301 循环水过滤器", "zone": "换热与过滤区", "position": {"x": 15.05, "y": -4.85, "z": 0.0}, "yaw_deg": 180.0, "pressure_max_mpa": 0.8, "warning_temp_c": 50.0, "critical_temp_c": 60.0, "require_door_closed": false},
+    {"waypoint_id": "WP_07_HVAC", "asset_id": "AST-HVAC-001", "device_id": "DEV-HVAC-001", "device_name": "北墙轴流排风机", "zone": "蒸汽与分离器区", "position": {"x": 2.8, "y": 5.55, "z": 0.0}, "yaw_deg": 180.0, "pressure_max_mpa": null, "warning_temp_c": 45.0, "critical_temp_c": 55.0, "require_door_closed": false},
+    {"waypoint_id": "WP_08_FIRE", "asset_id": "AST-FIRE-001", "device_id": "DEV-FIRE-001", "device_name": "东墙消防水带盘", "zone": "消防与应急设施区", "position": {"x": 16.9, "y": -3.85, "z": 0.0}, "yaw_deg": 270.0, "pressure_max_mpa": null, "warning_temp_c": 45.0, "critical_temp_c": 55.0, "require_door_closed": false},
+    {"waypoint_id": "WP_09_MRO", "asset_id": "AST-MRO-001", "device_id": "DEV-MRO-001", "device_name": "维修工位与备件架", "zone": "维护与备件区", "position": {"x": -2.35, "y": -6.75, "z": 0.0}, "yaw_deg": 0.0, "pressure_max_mpa": null, "warning_temp_c": 45.0, "critical_temp_c": 55.0, "require_door_closed": false},
+    {"waypoint_id": "WP_10_CRANE", "asset_id": "AST-CRANE-001", "device_id": "DEV-CRANE-001", "device_name": "上部检修天车", "zone": "蒸汽与分离器区", "position": {"x": 6.0, "y": 3.55, "z": 0.0}, "yaw_deg": 90.0, "pressure_max_mpa": null, "warning_temp_c": 45.0, "critical_temp_c": 55.0, "require_door_closed": false}
+  ],
+  "sensor_contracts": [
+    {"sensor_id": "rgb_camera", "channel": "visual_inspection", "unit": "frame", "source_status": "synthetic_simulation", "calibration": "pending"},
+    {"sensor_id": "thermal_camera", "channel": "surface_temperature", "unit": "degC", "source_status": "synthetic_simulation", "calibration": "pending"},
+    {"sensor_id": "pressure_gateway", "channel": "pressure", "unit": "MPa", "source_status": "not_connected", "calibration": "not_verified"},
+    {"sensor_id": "vibration_gateway", "channel": "rms_vibration", "unit": "mm_per_s", "source_status": "not_connected", "calibration": "not_verified"}
+  ],
+  "safety": {
+    "restricted_zones": ["ELEC-B"],
+    "stop_conditions": ["person_detected", "fire_alarm", "blocked_egress", "loss_of_localization"],
+    "human_review_required": ["critical_alarm", "leak_suspected", "thermal_hotspot", "safety_equipment_obstructed"],
+    "no_automatic_actuation": true
+  }
+}

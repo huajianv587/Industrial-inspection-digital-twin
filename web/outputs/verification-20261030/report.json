@@ -1,0 +1,85 @@
+{
+  "verifiedAt": "2026-10-30",
+  "verification": {
+    "build": "passed",
+    "e2eChrome": {
+      "passed": 30,
+      "total": 30,
+      "retryPolicy": "CI=1",
+      "viewports": [
+        "1024x768",
+        "1280x720",
+        "1440x900"
+      ]
+    },
+    "demoChrome": {
+      "passed": 1,
+      "total": 1,
+      "runId": "RUN-V36-PRECISION-INSPECTION-REALISM"
+    },
+    "staticScan": {
+      "fontSizeBelow11": 0,
+      "legacyPaletteMatches": 0
+    }
+  },
+  "checks": {
+    "portalEnglish": "en",
+    "portalOverflow": false,
+    "portalOverflowByViewport": {
+      "1024x768": false,
+      "1280x720": false,
+      "1440x900": false
+    },
+    "console1280": {
+      "scrollWidth": 1280,
+      "viewportWidth": 1280,
+      "titleWidth": 281,
+      "h1Width": 281,
+      "topbarHeight": 108.78125,
+      "sceneViewerAvailable": true
+    },
+    "detailInitial": {
+      "sceneOverlay": "active",
+      "sceneState": "ready",
+      "cameraButtons": 64,
+      "cameraPreviewNaturalWidth": 768,
+      "cameraPreviewNaturalHeight": 480
+    },
+    "replay": {
+      "feedCards": 2,
+      "floorZones": 5,
+      "floorEquipment": 9,
+      "waypointLabels": 10,
+      "waypointCoordinateTextInSvg": 0,
+      "inspectionLinks": 10,
+      "routePointCount": 214,
+      "routePlanner": "collision-safe-aisles",
+      "routeFrameCount": "214"
+    },
+    "visualDetail": {
+      "portalZoneLayers": 5,
+      "portalRouteGeometry": "orthogonal-service-aisle-path",
+      "portalClearance": "0.45 m",
+      "replayCurrentInspectionStrip": true,
+      "replayMapLabelOverlaps": 0
+    },
+    "consoleEnglish": {
+      "lang": "en",
+      "headingVisible": true
+    }
+  },
+  "screenshots": [
+    "outputs/verification-20261030/01-portal-zh.png",
+    "outputs/verification-20261030/02-portal-en.png",
+    "outputs/verification-20261030/03-console-1280.png",
+    "outputs/verification-20261030/04-detail-3d-osd.png",
+    "outputs/verification-20261030/05-replay-plan-sync.png",
+    "outputs/verification-20261030/06-detail-3d-ready.png",
+    "outputs/verification-20261030/07-detail-3d-ready.png",
+    "outputs/verification-20261030/08-replay-1440-ready.png",
+    "outputs/verification-20261030/09-portal-engineering-plan-detail.png",
+    "outputs/verification-20261030/10-3d-osd-detail.png",
+    "outputs/verification-20261030/11-replay-callout-detail.png",
+    "outputs/verification-20261030/12-replay-map-decluttered.png"
+  ]
+}

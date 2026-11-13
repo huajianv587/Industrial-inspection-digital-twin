@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Industrial Inspection">
+  <rect width="64" height="64" rx="8" fill="#080C10"/>
+  <path d="M14 44V20h10v12h8V16h10v16h8v12H14Z" fill="#0066FF"/>
+  <path d="M14 47h36" stroke="#00E5FF" stroke-width="3"/>
+  <circle cx="24" cy="20" r="3" fill="#F8FAFD"/>
+</svg>

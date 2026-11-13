@@ -1,0 +1,146 @@
+name: Quality gates
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: quality-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  backend:
+    name: Backend regression
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: '3.12'
+      - name: Install locked Python environment
+        run: |
+          python -m pip install uv==0.13.4
+          uv sync --locked --python 3.12 --extra test
+      - name: Audit locked Python dependencies
+        run: make audit-python
+      - name: Run backend tests
+        run: make test
+
+  desktop-web:
+    name: Desktop web build and browser tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: '24'
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - name: Install locked Node environment
+        working-directory: web
+        run: npm ci
+      - name: Audit Node dependencies
+        working-directory: web
+        run: npm run audit
+      - name: Install Chromium for desktop browser tests
+        working-directory: web
+        run: npx playwright install --with-deps chromium
+      - name: Build production frontend
+        working-directory: web
+        run: npm run build
+      - name: Run desktop browser tests
+        run: make test-web
+
+  containers:
+    name: Production image and Compose validation
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      SUPABASE_DB_URL: "postgresql://postgres.ci:placeholder@aws-0-us-east-1.pooler.supabase.com:5432/postgres?sslmode=require"
+      SUPABASE_APP_DB_URL: "postgresql://inspection_app.ci:placeholder@aws-0-us-east-1.pooler.supabase.com:5432/postgres?sslmode=require"
+      SUPABASE_URL: https://ci-placeholder.supabase.co
+      SUPABASE_ANON_KEY: ci-public-placeholder
+      SUPABASE_STORAGE_ENDPOINT: https://ci-placeholder.supabase.co/storage/v1/s3
+      SUPABASE_STORAGE_REGION: us-east-1
+      INSPECTION_EXECUTOR: slurm
+      SLURM_RESULT_SOURCE: isaac_sim
+      OIDC_ISSUER: https://ci-placeholder.supabase.co/auth/v1
+      OIDC_AUDIENCE: authenticated
+      SLURM_HOST: slurm.invalid
+      SLURM_USER: ci
+      SLURM_REMOTE_ROOT: /tmp/inspection-ci
+      ISAAC_SIM_VERSION: ci-placeholder
+      ISAAC_ROBOT_USD_PATH: /assets/robot.usd
+      ISAAC_SIM_PYTHON: /isaac-sim/python.sh
+      ISAAC_SIM_ADAPTER: ci-placeholder
+      SLURM_ISAAC_GPU_GRES: gpu:a40:1
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Build API runtime image
+        run: docker build --file Dockerfile --tag inspection-api:ci .
+      - name: Build web runtime image with public placeholders
+        run: |
+          docker build \
+            --file web/Dockerfile \
+            --tag inspection-web:ci \
+            --build-arg VITE_SUPABASE_URL=https://ci-placeholder.supabase.co \
+            --build-arg VITE_SUPABASE_ANON_KEY=ci-public-placeholder \
+            --build-arg VITE_API_BASE_URL=/api/v1 \
+            .
+      - name: Smoke-test web security headers
+        run: |
+          set -eu
+          docker run --detach --rm --name inspection-web-smoke \
+            --publish 127.0.0.1:18080:80 inspection-web:ci
+          trap 'docker rm --force inspection-web-smoke >/dev/null 2>&1 || true' EXIT
+          ready=0
+          for attempt in $(seq 1 20); do
+            if curl --silent --fail --head http://127.0.0.1:18080/overview >/tmp/web-headers; then
+              ready=1
+              break
+            fi
+            sleep 1
+          done
+          test "$ready" -eq 1
+          grep -qi '^Content-Security-Policy:' /tmp/web-headers
+          grep -qi '^X-Content-Type-Options: nosniff' /tmp/web-headers
+          grep -qi '^X-Frame-Options: DENY' /tmp/web-headers
+          grep -qi '^Permissions-Policy:' /tmp/web-headers
+          grep -qi '^Cache-Control: no-cache' /tmp/web-headers
+      - name: Validate Compose manifests without starting services
+        env:
+          PUBLIC_HOSTNAME: inspection.example.com
+          ACME_EMAIL: ops@example.com
+          SUPABASE_STORAGE_EMAIL_SECRET_FILE: ${{ runner.temp }}/inspection-compose-secrets/storage-email
+          SUPABASE_STORAGE_PASSWORD_SECRET_FILE: ${{ runner.temp }}/inspection-compose-secrets/storage-password
+          SLURM_IDENTITY_SECRET_FILE: ${{ runner.temp }}/inspection-compose-secrets/slurm-identity
+          SLURM_KNOWN_HOSTS_SECRET_FILE: ${{ runner.temp }}/inspection-compose-secrets/slurm-known-hosts
+        run: |
+          set -eu
+          set -o pipefail
+          install -d "$RUNNER_TEMP/inspection-compose-secrets"
+          touch \
+            "$SUPABASE_STORAGE_EMAIL_SECRET_FILE" \
+            "$SUPABASE_STORAGE_PASSWORD_SECRET_FILE" \
+            "$SLURM_IDENTITY_SECRET_FILE" \
+            "$SLURM_KNOWN_HOSTS_SECRET_FILE"
+          docker compose -f docker-compose.yml config --format json \
+            | python3 scripts/validate_compose_logging.py
+          docker compose -f docker-compose.yml -f docker-compose.slurm.yml config --format json \
+            | python3 scripts/validate_compose_logging.py
+          docker compose -f docker-compose.yml -f docker-compose.tls.yml config --format json \
+            | python3 scripts/validate_compose_logging.py --tls
+      - name: Validate Caddy configuration
+        run: |
+          docker run --rm \
+            --volume "$PWD/deploy/caddy/Caddyfile:/etc/caddy/Caddyfile:ro" \
+            --env PUBLIC_HOSTNAME=inspection.example.com \
+            --env ACME_EMAIL=ops@example.com \
+            caddy:2.11.7-alpine@sha256:d8542f48d34a9cf4e4c11a478865229840e87e4c96ea3f439101f31a5d35f75f \
+            validate --config /etc/caddy/Caddyfile --adapter caddyfile

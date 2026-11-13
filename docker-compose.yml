@@ -1,0 +1,159 @@
+x-runtime-environment: &runtime-environment
+  APP_ENV: ${APP_ENV:-production}
+  SUPABASE_APP_DB_URL: ${SUPABASE_APP_DB_URL:?SUPABASE_APP_DB_URL is required}
+  ARTIFACT_STORAGE_BACKEND: ${ARTIFACT_STORAGE_BACKEND:-supabase_s3}
+  SUPABASE_URL: ${SUPABASE_URL:?SUPABASE_URL is required}
+  SUPABASE_ANON_KEY: ${SUPABASE_ANON_KEY:?SUPABASE_ANON_KEY is required}
+  SUPABASE_STORAGE_ENDPOINT: ${SUPABASE_STORAGE_ENDPOINT:?SUPABASE_STORAGE_ENDPOINT is required}
+  SUPABASE_STORAGE_REGION: ${SUPABASE_STORAGE_REGION:?SUPABASE_STORAGE_REGION is required}
+  SUPABASE_STORAGE_BUCKET: ${SUPABASE_STORAGE_BUCKET:-inspection-artifacts}
+  SUPABASE_STORAGE_EMAIL_FILE: /run/inspection-secrets/supabase_storage_email
+  SUPABASE_STORAGE_PASSWORD_FILE: /run/inspection-secrets/supabase_storage_password
+  INSPECTION_EXECUTOR: ${INSPECTION_EXECUTOR:?INSPECTION_EXECUTOR must be explicitly configured}
+  INSPECTION_AUTH_MODE: ${INSPECTION_AUTH_MODE:-oidc}
+  OIDC_ISSUER: ${OIDC_ISSUER:?OIDC_ISSUER is required}
+  OIDC_AUDIENCE: ${OIDC_AUDIENCE:-authenticated}
+  SITE_CONFIG_PATH: /app/configs/site.json
+  MAX_UPLOAD_BYTES: ${MAX_UPLOAD_BYTES:-209715200}
+  SUBMISSION_RECOVERY_SECONDS: ${SUBMISSION_RECOVERY_SECONDS:-180}
+  SUBMISSION_ATTEMPT_LIMIT: ${SUBMISSION_ATTEMPT_LIMIT:-3}
+  RESULT_IMPORT_RETRY_SECONDS: ${RESULT_IMPORT_RETRY_SECONDS:-60}
+  WORKER_HEARTBEAT_STALE_SECONDS: ${WORKER_HEARTBEAT_STALE_SECONDS:-60}
+  SLURM_HOST: ${SLURM_HOST:-}
+  SLURM_USER: ${SLURM_USER:-}
+  SLURM_IDENTITY_FILE: /run/inspection-secrets/slurm_identity_key
+  SLURM_KNOWN_HOSTS_FILE: /run/inspection-secrets/slurm_known_hosts
+  SLURM_REMOTE_ROOT: ${SLURM_REMOTE_ROOT:-}
+  SLURM_PORT: ${SLURM_PORT:-22}
+  SLURM_PARTITION: ${SLURM_PARTITION:-}
+  SLURM_ACCOUNT: ${SLURM_ACCOUNT:-}
+  SLURM_RESULT_SOURCE: ${SLURM_RESULT_SOURCE:?SLURM_RESULT_SOURCE must be explicitly configured}
+  ISAAC_SIM_VERSION: ${ISAAC_SIM_VERSION:-}
+  ISAAC_ROBOT_USD_PATH: ${ISAAC_ROBOT_USD_PATH:-}
+  ISAAC_SIM_PYTHON: ${ISAAC_SIM_PYTHON:-}
+  ISAAC_SIM_ADAPTER: ${ISAAC_SIM_ADAPTER:-}
+  ISAAC_MODEL_MANIFEST_PATH: ${ISAAC_MODEL_MANIFEST_PATH:-}
+  ISAAC_MODEL_MANIFEST_SHA256: ${ISAAC_MODEL_MANIFEST_SHA256:-}
+  ISAAC_MODEL_ARTIFACT_SHA256: ${ISAAC_MODEL_ARTIFACT_SHA256:-}
+  ISAAC_MODEL_ID: ${ISAAC_MODEL_ID:-}
+  ISAAC_MODEL_VERSION: ${ISAAC_MODEL_VERSION:-}
+  SLURM_ISAAC_GPU_GRES: ${SLURM_ISAAC_GPU_GRES:-}
+  SLURM_ISAAC_CPUS: ${SLURM_ISAAC_CPUS:-4}
+  SLURM_ISAAC_MEMORY: ${SLURM_ISAAC_MEMORY:-16G}
+  SLURM_ISAAC_TIME_LIMIT: ${SLURM_ISAAC_TIME_LIMIT:-02:00:00}
+
+x-container-logging: &container-logging
+  driver: json-file
+  options:
+    max-size: "10m"
+    max-file: "5"
+
+services:
+  preflight:
+    user: "0:0"
+    logging: *container-logging
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment: *runtime-environment
+    command: ["inspection-system", "validate-runtime"]
+    secrets:
+      - supabase_storage_email
+      - supabase_storage_password
+    tmpfs:
+      - /run/inspection-secrets:mode=0700
+    restart: "no"
+    networks:
+      - backend
+
+  migrate:
+    logging: *container-logging
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      APP_ENV: ${APP_ENV:-production}
+      SUPABASE_DB_URL: ${SUPABASE_DB_URL:?SUPABASE_DB_URL is required}
+      SUPABASE_URL: ${SUPABASE_URL:?SUPABASE_URL is required}
+    command: ["alembic", "upgrade", "head"]
+    restart: "no"
+    networks:
+      - backend
+    depends_on:
+      preflight:
+        condition: service_completed_successfully
+
+  api:
+    user: "0:0"
+    logging: *container-logging
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment: *runtime-environment
+    command: ["uvicorn", "inspection_system.platform.api:create_app", "--factory", "--host", "0.0.0.0", "--port", "8000", "--log-config", "/app/configs/logging.json"]
+    secrets:
+      - supabase_storage_email
+      - supabase_storage_password
+    tmpfs:
+      - /run/inspection-secrets:mode=0700
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/readyz', timeout=3)"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+    restart: unless-stopped
+    networks:
+      - backend
+
+  worker:
+    user: "0:0"
+    logging: *container-logging
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment: *runtime-environment
+    command: ["inspection-worker"]
+    secrets:
+      - supabase_storage_email
+      - supabase_storage_password
+    tmpfs:
+      - /run/inspection-secrets:mode=0700
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+    restart: unless-stopped
+    networks:
+      - backend
+
+  web:
+    logging: *container-logging
+    build:
+      context: .
+      dockerfile: web/Dockerfile
+      args:
+        VITE_SUPABASE_URL: ${SUPABASE_URL}
+        VITE_SUPABASE_ANON_KEY: ${SUPABASE_ANON_KEY}
+        VITE_API_BASE_URL: /api/v1
+    ports:
+      - "127.0.0.1:${WEB_PORT:-8080}:80"
+    depends_on:
+      api:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+      - backend
+      - edge
+
+secrets:
+  supabase_storage_email:
+    file: ${SUPABASE_STORAGE_EMAIL_SECRET_FILE:?SUPABASE_STORAGE_EMAIL_SECRET_FILE is required}
+  supabase_storage_password:
+    file: ${SUPABASE_STORAGE_PASSWORD_SECRET_FILE:?SUPABASE_STORAGE_PASSWORD_SECRET_FILE is required}
+
+networks:
+  backend:
+  edge:

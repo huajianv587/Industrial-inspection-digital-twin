@@ -1,0 +1,10 @@
+string waypoint_id
+string device_id
+string device_name
+string zone
+geometry_msgs/Pose pose
+bool has_pressure_limit
+float32 pressure_max_mpa
+float32 warning_temp_c
+float32 critical_temp_c
+bool require_door_closed

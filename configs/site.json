@@ -1,0 +1,47 @@
+{
+  "site_id": "SIM-FACTORY-001",
+  "site_name": "示例工厂巡检区域",
+  "robot": {
+    "robot_id": "unitree-sim-01",
+    "model": "Unitree Go2 (simulated adapter)",
+    "asset_status": "not_included"
+  },
+  "waypoints": [
+    {
+      "waypoint_id": "WP_01_PIPE",
+      "device_id": "DEV-PIPE-302",
+      "device_name": "蒸汽主管道压力表与法兰",
+      "zone": "模拟管廊 A 区",
+      "position": {"x": 4.0, "y": 1.0, "z": 0.0},
+      "yaw_deg": 90.0,
+      "pressure_max_mpa": 1.2,
+      "warning_temp_c": 55.0,
+      "critical_temp_c": 60.0,
+      "require_door_closed": false
+    },
+    {
+      "waypoint_id": "WP_02_CABINET",
+      "device_id": "DEV-CAB-108",
+      "device_name": "低压配电柜 4 号柜",
+      "zone": "模拟配电房 B 区",
+      "position": {"x": 8.0, "y": -2.0, "z": 0.0},
+      "yaw_deg": 180.0,
+      "pressure_max_mpa": null,
+      "warning_temp_c": 55.0,
+      "critical_temp_c": 60.0,
+      "require_door_closed": true
+    },
+    {
+      "waypoint_id": "WP_03_PUMP",
+      "device_id": "DEV-PUMP-021",
+      "device_name": "循环泵组 P-021",
+      "zone": "模拟泵房 C 区",
+      "position": {"x": 11.5, "y": 3.5, "z": 0.0},
+      "yaw_deg": 45.0,
+      "pressure_max_mpa": 1.1,
+      "warning_temp_c": 50.0,
+      "critical_temp_c": 65.0,
+      "require_door_closed": false
+    }
+  ]
+}

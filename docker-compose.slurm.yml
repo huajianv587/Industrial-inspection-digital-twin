@@ -1,0 +1,20 @@
+services:
+  preflight:
+    secrets:
+      - source: slurm_identity_key
+        target: slurm_identity_key
+      - source: slurm_known_hosts
+        target: slurm_known_hosts
+
+  worker:
+    secrets:
+      - source: slurm_identity_key
+        target: slurm_identity_key
+      - source: slurm_known_hosts
+        target: slurm_known_hosts
+
+secrets:
+  slurm_identity_key:
+    file: ${SLURM_IDENTITY_SECRET_FILE:?SLURM_IDENTITY_SECRET_FILE is required for Slurm mode}
+  slurm_known_hosts:
+    file: ${SLURM_KNOWN_HOSTS_SECRET_FILE:?SLURM_KNOWN_HOSTS_SECRET_FILE is required for Slurm mode}

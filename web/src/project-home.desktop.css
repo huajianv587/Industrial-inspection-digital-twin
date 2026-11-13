@@ -1,0 +1,1400 @@
+.project-home {
+  --ph-canvas: var(--ind-bg);
+  --ph-surface: #ffffff;
+  --ph-surface-subtle: var(--ind-surface-1);
+  --ph-surface-muted: var(--ind-surface-2);
+  --ph-chassis: var(--ind-surface-dark);
+  --ph-chassis-elevated: var(--ind-surface-dark-panel);
+  --ph-chassis-panel: rgba(255, 255, 255, 0.94);
+  --ph-chassis-card: rgba(255, 255, 255, 0.92);
+  --ph-ink: var(--ind-ink-primary);
+  --ph-ink-secondary: var(--ind-ink-secondary);
+  --ph-ink-tertiary: var(--ind-ink-muted);
+  --ph-ink-muted: #94a3b8;
+  --ph-ink-on-dark: #f1f5f9;
+  --ph-ink-on-dark-muted: #94a3b8;
+  --ph-ink-on-dark-dim: #64748b;
+  --ph-line: var(--ind-line-hairline);
+  --ph-line-strong: var(--ind-line-strong);
+  --ph-line-dark: rgba(30, 41, 59, 0.16);
+  --ph-line-dark-strong: rgba(30, 41, 59, 0.28);
+  --ph-accent: var(--ind-accent);
+  --ph-accent-hover: var(--ind-accent-hover);
+  --ph-accent-signal: var(--ind-cyan);
+  --ph-accent-soft: var(--ind-accent-subtle);
+  --ph-status-ok: #10b981;
+  --ph-status-warn: #f59e0b;
+  --ph-font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+  --ph-font-display: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+  --ph-font-mono: 'JetBrains Mono', 'SF Mono', 'Menlo', 'Cascadia Code', ui-monospace, monospace;
+  --ph-ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  min-height: 100vh;
+  background-color: var(--ph-canvas);
+  color: var(--ph-ink);
+  font-family: var(--ph-font-sans);
+  font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: clip;
+}
+
+.project-home *,
+.project-home *::before,
+.project-home *::after {
+  box-sizing: border-box;
+}
+
+/* ==========================================================================
+   1. Top Command Header
+   ========================================================================== */
+.project-home .project-header {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  min-height: 60px;
+  padding: 10px clamp(20px, 3.5vw, 48px);
+  background: rgba(255, 255, 255, 0.94);
+  backdrop-filter: blur(16px) saturate(140%);
+  -webkit-backdrop-filter: blur(16px) saturate(140%);
+  border-bottom: 1px solid var(--ph-line);
+}
+
+.project-home .project-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 11px;
+  color: var(--ph-ink);
+  text-decoration: none;
+  min-width: 0;
+}
+
+.project-home .project-brand-mark {
+  display: inline-grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+  border-radius: 6px;
+  border: 1px solid rgba(0, 102, 255, 0.28);
+  background: linear-gradient(180deg, #e8f1ff 0%, #dceaff 100%);
+  color: var(--ph-accent);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.8), 0 2px 5px rgba(10, 16, 29, 0.08);
+}
+
+.project-home .project-brand-name {
+  display: grid;
+  gap: 1px;
+  min-width: 0;
+}
+
+.project-home .project-brand-name strong {
+  color: var(--ph-ink);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1.25;
+  white-space: nowrap;
+}
+
+.project-home .project-brand-name small {
+  color: var(--ph-ink-tertiary);
+  font-size: 11px;
+  font-weight: 400;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.project-home .project-nav {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px;
+  border-radius: 7px;
+  border: 1px solid var(--ph-line);
+  background: var(--ph-surface-subtle);
+}
+
+.project-home .project-nav a {
+  padding: 5px 12px;
+  border-radius: 5px;
+  color: var(--ph-ink-secondary);
+  font-size: 12.5px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: color 160ms var(--ph-ease-out), background-color 160ms var(--ph-ease-out);
+}
+
+.project-home .project-nav a:hover,
+.project-home .project-nav a:focus-visible {
+  color: var(--ph-ink);
+  background: var(--ph-accent-soft);
+}
+
+.project-home .project-header-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.project-home .project-technical-mark {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  height: 28px;
+  padding: 0 10px;
+  border-radius: 5px;
+  border: 1px solid var(--ph-line);
+  background: var(--ph-surface-subtle);
+  color: var(--ph-ink-secondary);
+  font: 500 11px/1 var(--ph-font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+.project-home .project-technical-mark i {
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: var(--ph-status-ok);
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.16);
+}
+
+.project-home .project-language {
+  display: inline-grid;
+  grid-template-columns: repeat(2, minmax(36px, auto));
+  padding: 2px;
+  border-radius: 6px;
+  border: 1px solid var(--ph-line);
+  background: var(--ph-surface-subtle);
+}
+
+.project-home .project-language button {
+  height: 26px;
+  padding: 0 9px;
+  border: 0;
+  border-radius: 4px;
+  background: transparent;
+  color: var(--ph-ink-secondary);
+  font: 600 11px/1 var(--ph-font-sans);
+  cursor: pointer;
+  transition: color 150ms var(--ph-ease-out), background-color 150ms var(--ph-ease-out);
+}
+
+.project-home .project-language button.selected {
+  background: var(--ph-accent-soft);
+  color: var(--ph-ink);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+}
+
+.project-home .project-console-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 32px;
+  padding: 0 13px;
+  border-radius: 6px;
+  border: 1px solid rgba(56, 189, 248, 0.32);
+  background: linear-gradient(180deg, #0b63e5 0%, #0052cc 100%);
+  color: #ffffff;
+  font-size: 12.5px;
+  font-weight: 600;
+  text-decoration: none;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.18), 0 1px 3px rgba(0, 0, 0, 0.3);
+  transition: transform 160ms var(--ph-ease-out), background 160ms var(--ph-ease-out), border-color 160ms var(--ph-ease-out);
+}
+
+.project-home .project-console-link:hover {
+  background: linear-gradient(180deg, #1670f5 0%, #005ce6 100%);
+  border-color: rgba(125, 211, 252, 0.55);
+  transform: translateY(-1px);
+}
+
+/* ==========================================================================
+   2. Hero Command Deck
+   ========================================================================== */
+.project-home .project-hero {
+  position: relative;
+  isolation: isolate;
+  padding: 20px 0 52px;
+  background-color: var(--ph-canvas);
+  background-image: none;
+  color: var(--ph-ink);
+  border-bottom: 1px solid var(--ph-line);
+  overflow: hidden;
+}
+
+.project-home .project-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    radial-gradient(860px 420px at 16% 12%, rgba(0, 102, 255, 0.08), transparent 65%),
+    radial-gradient(760px 440px at 82% 24%, rgba(0, 229, 255, 0.08), transparent 68%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.98) 0%, rgba(240, 243, 247, 0.98) 100%);
+  pointer-events: none;
+}
+
+.project-home .project-hero::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-image:
+    linear-gradient(90deg, rgba(30, 41, 59, 0.06) 1px, transparent 1px),
+    linear-gradient(0deg, rgba(30, 41, 59, 0.06) 1px, transparent 1px);
+  background-size: 40px 40px;
+  mask-image: radial-gradient(ellipse 85% 75% at 50% 42%, #000 35%, transparent 100%);
+  -webkit-mask-image: radial-gradient(ellipse 85% 75% at 50% 42%, #000 35%, transparent 100%);
+  pointer-events: none;
+}
+
+.project-home .project-hero-telemetry {
+  width: min(1360px, calc(100% - 48px));
+  margin: 0 auto 20px;
+  display: grid;
+  grid-template-columns: minmax(220px, 1.3fr) repeat(3, minmax(0, 1fr));
+  border: 1px solid var(--ph-line-strong);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(8px);
+  overflow: hidden;
+}
+
+.project-home .project-hero-telemetry > span {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  min-height: 36px;
+  padding: 6px 14px;
+  border-right: 1px solid var(--ph-line-dark);
+  color: var(--ph-ink-secondary);
+  font: 500 11px/1.2 var(--ph-font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+.project-home .project-hero-telemetry > span:first-child {
+  justify-content: flex-start;
+  color: var(--ph-ink-primary);
+  font-weight: 600;
+}
+
+.project-home .project-hero-telemetry > span:last-child {
+  border-right: 0;
+}
+
+.project-home .project-hero-telemetry b {
+  color: var(--ph-ink-tertiary);
+  font-weight: 500;
+}
+
+.project-home .project-hero-telemetry strong {
+  color: var(--ph-ink-primary);
+  font-weight: 600;
+}
+
+.project-home .telemetry-led {
+  width: 7px;
+  height: 7px;
+  flex-shrink: 0;
+  border-radius: 999px;
+  background: var(--ph-status-ok);
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.18);
+}
+
+.project-home .project-hero-content {
+  width: min(1360px, calc(100% - 48px));
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: minmax(310px, 0.76fr) minmax(0, 1.54fr);
+  gap: 24px;
+  align-items: start;
+}
+
+.project-home .project-hero-main {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  min-width: 0;
+  padding: 6px 0;
+}
+
+.project-home .project-hero-verification {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 26px;
+  padding: 0 10px;
+  margin-bottom: 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(16, 185, 129, 0.28);
+  background: var(--ind-status-nominal-bg);
+  color: var(--ind-status-nominal-ink);
+  font-size: 11.5px;
+  font-weight: 500;
+}
+
+.project-home .project-hero-verification i {
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: var(--ph-status-ok);
+}
+
+.project-home .project-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  color: var(--ph-accent);
+  font-size: 11.5px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.project-home .project-hero h1 {
+  margin: 10px 0 14px;
+  color: var(--ph-ink);
+  font-family: var(--ph-font-display);
+  font-size: clamp(32px, 3.3vw, 46px);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+.project-home .project-hero-intro {
+  margin: 0;
+  color: var(--ph-ink-secondary);
+  font-size: 14.5px;
+  line-height: 1.68;
+  font-weight: 400;
+}
+
+.project-home .project-hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin-top: 22px;
+}
+
+.project-home .project-cta-primary,
+.project-home .project-cta-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 40px;
+  padding: 0 18px;
+  border-radius: 7px;
+  font-size: 13.5px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: transform 160ms var(--ph-ease-out), background-color 160ms var(--ph-ease-out), border-color 160ms var(--ph-ease-out), box-shadow 160ms var(--ph-ease-out);
+}
+
+.project-home .project-cta-primary {
+  border: 1px solid rgba(56, 189, 248, 0.35);
+  background: linear-gradient(180deg, #0b63e5 0%, #0052cc 100%);
+  color: #ffffff;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 4px 14px rgba(0, 82, 204, 0.35);
+}
+
+.project-home .project-cta-primary:hover {
+  background: linear-gradient(180deg, #1872f6 0%, #005be0 100%);
+  transform: translateY(-1px);
+}
+
+.project-home .project-cta-secondary {
+  border: 1px solid var(--ph-line-strong);
+  background: var(--ph-surface);
+  color: var(--ph-ink-secondary);
+}
+
+.project-home .project-cta-secondary:hover {
+  border-color: var(--ph-accent);
+  background: var(--ph-accent-soft);
+  color: var(--ph-ink);
+}
+
+.project-home .project-hero-note {
+  display: inline-flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin: 18px 0 0;
+  padding-top: 14px;
+  border-top: 1px solid var(--ph-line-dark);
+  color: var(--ph-ink-tertiary);
+  font-size: 12.5px;
+  line-height: 1.55;
+}
+
+.project-home .project-hero-note svg {
+  flex-shrink: 0;
+  margin-top: 2px;
+  color: var(--ph-accent-signal);
+}
+
+/* ==========================================================================
+   3. Tactical Blueprint & State Verification Rail
+   ========================================================================== */
+.project-home .project-hero-tactical {
+  display: grid;
+  grid-template-columns: minmax(0, 1.48fr) minmax(220px, 0.72fr);
+  gap: 14px;
+  align-items: start;
+  min-width: 0;
+}
+
+.project-home .project-site-plan {
+  margin: 0;
+  padding: 14px;
+  border-radius: 10px;
+  border: 1px solid var(--ph-line-strong);
+  background-color: rgba(255, 255, 255, 0.96);
+  box-shadow: 0 18px 40px -16px rgba(15, 23, 42, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  min-width: 0;
+}
+
+.project-home .project-site-plan-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  padding-bottom: 10px;
+  margin-bottom: 10px;
+  border-bottom: 1px solid var(--ph-line);
+}
+
+.project-home .project-site-plan-heading span {
+  display: block;
+  color: var(--ph-accent);
+  font: 500 11px/1.3 var(--ph-font-mono);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.project-home .project-site-plan-heading h2 {
+  margin: 3px 0 0;
+  color: var(--ph-ink);
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.project-home .project-site-plan-heading-tools {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--ph-ink-tertiary);
+}
+
+.project-home .project-site-plan-meta {
+  padding: 3px 7px;
+  border-radius: 4px;
+  border: 1px solid var(--ph-line);
+  background: var(--ph-surface-subtle);
+  color: var(--ph-ink-secondary);
+  font: 500 11px/1.2 var(--ph-font-mono);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.project-home .project-site-plan-map {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 6px;
+  border: 1px solid rgba(148, 163, 184, 0.16);
+  background:
+    linear-gradient(90deg, rgba(30, 41, 59, 0.08) 1px, transparent 1px) 0 0 / 25px 25px,
+    linear-gradient(0deg, rgba(30, 41, 59, 0.08) 1px, transparent 1px) 0 0 / 25px 25px,
+    radial-gradient(circle at 50% 50%, #ffffff 0%, #edf2f7 100%);
+}
+
+.project-home .project-plan-boundary {
+  fill: rgba(226, 232, 240, 0.34);
+  stroke: rgba(71, 85, 105, 0.36);
+  stroke-width: 1;
+}
+
+.project-home .project-plan-zones rect {
+  fill: rgba(203, 213, 225, 0.34);
+  stroke: rgba(71, 85, 105, 0.24);
+  stroke-width: 1;
+  stroke-dasharray: 3 3;
+}
+
+.project-home .project-plan-zones text {
+  fill: rgba(71, 85, 105, 0.8);
+  font: 500 11px var(--ph-font-mono);
+  letter-spacing: 0.04em;
+}
+
+.project-home .project-plan-crosshairs line {
+  stroke: rgba(0, 102, 255, 0.38);
+  stroke-width: 1;
+  stroke-dasharray: 3 3;
+  pointer-events: none;
+}
+
+.project-home .project-plan-compass circle {
+  fill: rgba(255, 255, 255, 0.92);
+  stroke: rgba(71, 85, 105, 0.38);
+  stroke-width: 1;
+}
+
+.project-home .project-plan-compass path {
+  fill: var(--ph-accent);
+}
+
+.project-home .project-plan-compass text,
+.project-home .project-plan-scale text,
+.project-home .project-plan-axis {
+  fill: var(--ph-ink-tertiary);
+  font: 500 11px var(--ph-font-mono);
+  text-anchor: middle;
+}
+
+.project-home .project-plan-scale path {
+  fill: none;
+  stroke: rgba(71, 85, 105, 0.5);
+  stroke-width: 1.2;
+}
+
+.project-home .project-plan-route-clearance {
+  fill: none;
+  stroke: rgba(0, 102, 255, 0.1);
+  stroke-width: 10;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.project-home .project-plan-route-glow {
+  fill: none;
+  stroke: rgba(0, 102, 255, 0.24);
+  stroke-width: 3.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.project-home .project-plan-route {
+  fill: none;
+  stroke: var(--ph-accent);
+  stroke-width: 1.75;
+  stroke-dasharray: 6 4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  animation: ph-route-flow 18s linear infinite;
+}
+
+@keyframes ph-route-flow {
+  to {
+    stroke-dashoffset: -120;
+  }
+}
+
+.project-home .project-plan-robot-marker circle {
+  fill: rgba(16, 185, 129, 0.2);
+  stroke: var(--ph-status-ok);
+  stroke-width: 1.4;
+}
+
+.project-home .project-plan-robot-marker path {
+  fill: #6ee7b7;
+}
+
+.project-home .project-plan-robot-marker text {
+  fill: #047857;
+  font: 600 11px var(--ph-font-mono);
+}
+
+.project-home .project-plan-point {
+  cursor: pointer;
+  outline: none;
+}
+
+.project-home .project-plan-sonar {
+  fill: none;
+  stroke: rgba(56, 189, 248, 0);
+  stroke-width: 1.2;
+  transition: stroke 180ms var(--ph-ease-out), transform 180ms var(--ph-ease-out);
+}
+
+.project-home .project-plan-halo {
+  fill: rgba(14, 165, 233, 0.12);
+  stroke: rgba(56, 189, 248, 0.35);
+  stroke-width: 1;
+  transition: fill 160ms var(--ph-ease-out), stroke 160ms var(--ph-ease-out), r 160ms var(--ph-ease-out);
+}
+
+.project-home .project-plan-core {
+  fill: #ffffff;
+  stroke: var(--ph-accent);
+  stroke-width: 1.6;
+  transition: fill 160ms var(--ph-ease-out), stroke 160ms var(--ph-ease-out);
+}
+
+.project-home .project-plan-point text {
+  fill: var(--ph-ink-primary);
+  font: 600 11px var(--ph-font-mono);
+  text-anchor: middle;
+  pointer-events: none;
+}
+
+.project-home .project-plan-point:hover .project-plan-halo,
+.project-home .project-plan-point.is-active .project-plan-halo {
+  fill: rgba(0, 102, 255, 0.16);
+  stroke: var(--ph-accent);
+}
+
+.project-home .project-plan-point:hover .project-plan-core,
+.project-home .project-plan-point.is-active .project-plan-core {
+  fill: var(--ph-accent);
+  stroke: #ffffff;
+}
+
+.project-home .project-plan-point.is-active .project-plan-sonar {
+  stroke: rgba(0, 102, 255, 0.55);
+}
+
+.project-home .project-plan-hud {
+  pointer-events: none;
+}
+
+.project-home .project-plan-hud rect {
+  fill: rgba(255, 255, 255, 0.96);
+  stroke: rgba(0, 102, 255, 0.5);
+  stroke-width: 1;
+}
+
+.project-home .project-plan-hud path {
+  fill: none;
+  stroke: var(--ph-accent-signal);
+  stroke-width: 1.4;
+}
+
+.project-home .project-plan-hud text {
+  fill: var(--ph-ink-secondary);
+  font: 500 11px var(--ph-font-mono);
+}
+
+.project-home .project-plan-hud .project-plan-hud-kicker {
+  fill: var(--ph-accent-hover);
+  font-weight: 700;
+}
+
+.project-home .project-plan-hud .project-plan-hud-status {
+  fill: #047857;
+}
+
+.project-home .project-site-plan-status {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 9px;
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: 1px solid var(--ph-line);
+  background: var(--ph-surface-subtle);
+  font-size: 11px;
+}
+
+.project-home .project-site-plan-status span {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: var(--ph-ink-secondary);
+  font-weight: 500;
+}
+
+.project-home .project-site-plan-status span i {
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: var(--ph-accent-signal);
+}
+
+.project-home .project-site-plan-status small {
+  color: var(--ph-ink-tertiary);
+  font: 500 11px var(--ph-font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+.project-home .project-site-plan-legend {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 5px;
+  margin-top: 8px;
+}
+
+.project-home .project-site-plan-stop {
+  display: grid;
+  grid-template-columns: 20px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 8px;
+  border-radius: 5px;
+  border: 1px solid var(--ph-line);
+  background: var(--ph-surface-subtle);
+  color: var(--ph-ink-secondary);
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 150ms var(--ph-ease-out), background-color 150ms var(--ph-ease-out);
+}
+
+.project-home .project-site-plan-stop:hover,
+.project-home .project-site-plan-stop:focus-visible,
+.project-home .project-site-plan-stop[aria-pressed='true'] {
+  border-color: rgba(0, 102, 255, 0.55);
+  background: var(--ph-accent-soft);
+}
+
+.project-home .project-site-plan-stop i {
+  display: inline-grid;
+  place-items: center;
+  height: 18px;
+  border-radius: 3px;
+  background: var(--ph-accent-soft);
+  color: var(--ph-accent-hover);
+  font: 600 11px/1 var(--ph-font-mono);
+  font-style: normal;
+}
+
+.project-home .project-site-plan-stop span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 11.5px;
+  font-weight: 500;
+  color: var(--ph-ink-primary);
+}
+
+.project-home .project-site-plan-stop small {
+  color: var(--ph-ink-tertiary);
+  font: 500 11px/1 var(--ph-font-mono);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.project-home .project-site-plan figcaption {
+  margin-top: 8px;
+  color: var(--ph-ink-tertiary);
+  font-size: 11px;
+  line-height: 1.45;
+}
+
+/* Verification State Rail */
+.project-home .project-state-rail {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 14px;
+  border-radius: 10px;
+  border: 1px solid var(--ph-line-strong);
+  background: var(--ph-surface);
+  backdrop-filter: blur(10px);
+  min-width: 0;
+}
+
+.project-home .project-state-rail h2 {
+  margin: 0 0 4px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--ph-line);
+  color: var(--ph-ink-tertiary);
+  font-size: 11.5px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.project-home .project-state-row {
+  display: grid;
+  gap: 3px;
+  padding: 8px 10px;
+  border-radius: 6px;
+  border: 1px solid var(--ph-line);
+  background: var(--ph-surface-subtle);
+}
+
+.project-home .project-state-label {
+  color: var(--ph-ink-tertiary);
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.project-home .project-state-row strong {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12.5px;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.project-home .project-state-row strong::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  flex-shrink: 0;
+  border-radius: 999px;
+}
+
+.project-home .project-state-row strong.state-ready {
+  color: #047857;
+}
+
+.project-home .project-state-row strong.state-ready::before {
+  background: var(--ph-status-ok);
+}
+
+.project-home .project-state-row strong.state-boundary {
+  color: #b45309;
+}
+
+.project-home .project-state-row strong.state-boundary::before {
+  background: var(--ph-status-warn);
+}
+
+.project-home .project-state-row small {
+  color: var(--ph-ink-tertiary);
+  font-size: 11px;
+  line-height: 1.35;
+}
+
+.project-home .project-hero-caption {
+  width: min(1360px, calc(100% - 48px));
+  margin: 18px auto 0;
+  padding-top: 12px;
+  border-top: 1px solid var(--ph-line);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  color: var(--ph-ink-tertiary);
+  font-size: 11.5px;
+}
+
+/* ==========================================================================
+   4. Metric Strip (.project-facts)
+   ========================================================================== */
+.project-home .project-facts {
+  width: min(1360px, calc(100% - 48px));
+  margin: -26px auto 0;
+  position: relative;
+  z-index: 5;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  border-radius: 10px;
+  border: 1px solid var(--ph-line-strong);
+  background: var(--ph-surface);
+  box-shadow: 0 12px 32px -12px rgba(15, 23, 42, 0.12);
+  overflow: hidden;
+}
+
+.project-home .project-fact {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  grid-template-areas:
+    'val label'
+    'val detail';
+  column-gap: 16px;
+  row-gap: 2px;
+  align-items: center;
+  padding: 18px 24px;
+  border-right: 1px solid var(--ph-line);
+}
+
+.project-home .project-fact:last-child {
+  border-right: 0;
+}
+
+.project-home .project-fact strong {
+  grid-area: val;
+  color: var(--ph-ink);
+  font: 700 32px/1 var(--ph-font-mono);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.03em;
+}
+
+.project-home .project-fact-label {
+  grid-area: label;
+  color: var(--ph-ink);
+  font-size: 13.5px;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.project-home .project-fact small {
+  grid-area: detail;
+  color: var(--ph-ink-tertiary);
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+/* ==========================================================================
+   5. System Architecture Bento Grid (.project-systems)
+   ========================================================================== */
+.project-home .project-section,
+.project-home .project-workflow,
+.project-home .project-scope {
+  width: min(1360px, calc(100% - 48px));
+  margin: 0 auto;
+  padding: 56px 0;
+}
+
+.project-home .project-section-heading {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(280px, 460px);
+  gap: 24px;
+  align-items: end;
+  padding-bottom: 24px;
+  margin-bottom: 24px;
+  border-bottom: 1px solid var(--ph-line);
+}
+
+.project-home .project-section-heading .project-eyebrow,
+.project-home .project-scope-heading .project-eyebrow {
+  color: var(--ph-accent);
+}
+
+.project-home .project-section-heading h2,
+.project-home .project-scope-heading h2 {
+  margin: 6px 0 0;
+  color: var(--ph-ink);
+  font-family: var(--ph-font-display);
+  font-size: clamp(22px, 2.2vw, 28px);
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  line-height: 1.2;
+}
+
+.project-home .project-section-heading p {
+  margin: 0;
+  color: var(--ph-ink-secondary);
+  font-size: 13.5px;
+  line-height: 1.6;
+}
+
+.project-home .project-capabilities {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.project-home .project-capability {
+  display: grid;
+  grid-template-columns: 40px minmax(0, 1fr) auto;
+  gap: 14px;
+  align-items: start;
+  padding: 20px 22px;
+  border-radius: 10px;
+  border: 1px solid var(--ph-line);
+  background: var(--ph-surface);
+  transition: border-color 180ms var(--ph-ease-out), box-shadow 180ms var(--ph-ease-out);
+}
+
+.project-home .project-capability:hover {
+  border-color: var(--ph-line-strong);
+  box-shadow: 0 10px 24px -12px rgba(15, 23, 42, 0.1);
+}
+
+.project-home .project-capability-number {
+  display: none;
+}
+
+.project-home .project-capability-icon {
+  display: inline-grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  border: 1px solid var(--ph-line);
+  background: var(--ph-surface-subtle);
+  color: var(--ph-accent);
+}
+
+.project-home .project-capability-copy {
+  min-width: 0;
+}
+
+.project-home .project-capability-code {
+  display: inline-block;
+  margin-right: 8px;
+  color: var(--ph-ink-tertiary);
+  font: 500 11px/1.2 var(--ph-font-mono);
+}
+
+.project-home .project-capability-copy .project-eyebrow {
+  color: var(--ph-accent);
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.project-home .project-capability-copy h3 {
+  margin: 5px 0 6px;
+  color: var(--ph-ink);
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1.3;
+}
+
+.project-home .project-capability-copy p {
+  margin: 0;
+  color: var(--ph-ink-secondary);
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.project-home .project-capability-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 24px;
+  padding: 0 9px;
+  border-radius: 999px;
+  border: 1px solid var(--ph-line);
+  background: var(--ph-surface-subtle);
+  color: var(--ph-ink-secondary);
+  font-size: 11px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.project-home .project-capability-status i {
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: var(--ph-status-ok);
+}
+
+/* ==========================================================================
+   6. Traceable Execution Pipeline (.project-workflow)
+   ========================================================================== */
+.project-home .project-workflow {
+  border-top: 1px solid var(--ph-line);
+}
+
+.project-home .project-flow-bus {
+  position: relative;
+}
+
+.project-home .project-flow-bus-line {
+  display: none;
+}
+
+.project-home .project-flow-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.project-home .project-flow-list li {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 60px;
+  padding: 12px 14px;
+  border-radius: 8px;
+  border: 1px solid var(--ph-line);
+  background: var(--ph-surface);
+  transition: border-color 160ms var(--ph-ease-out), background-color 160ms var(--ph-ease-out);
+}
+
+.project-home .project-flow-list li:hover {
+  border-color: var(--ph-accent);
+  background: #ffffff;
+}
+
+.project-home .project-flow-number {
+  display: inline-grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  flex-shrink: 0;
+  border-radius: 6px;
+  background: var(--ph-accent-soft);
+  color: var(--ph-accent);
+  font: 600 11.5px/1 var(--ph-font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+.project-home .project-flow-list li strong {
+  color: var(--ph-ink);
+  font-size: 13.5px;
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+.project-home .project-flow-arrow {
+  margin-left: auto;
+  flex-shrink: 0;
+  color: var(--ph-ink-muted);
+}
+
+.project-home .project-current-mode {
+  margin-top: 16px;
+  padding: 16px 20px;
+  border-radius: 9px;
+  border: 1px solid var(--ph-line-strong);
+  background: var(--ph-surface-subtle);
+  display: grid;
+  grid-template-columns: 36px minmax(0, 1fr) auto;
+  gap: 14px;
+  align-items: center;
+}
+
+.project-home .project-mode-icon {
+  display: inline-grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 7px;
+  background: var(--ph-accent-soft);
+  color: var(--ph-accent);
+}
+
+.project-home .project-current-mode strong {
+  display: block;
+  color: var(--ph-ink);
+  font-size: 13.5px;
+  font-weight: 600;
+}
+
+.project-home .project-current-mode p {
+  margin: 2px 0 0;
+  color: var(--ph-ink-secondary);
+  font-size: 12.5px;
+  line-height: 1.5;
+}
+
+.project-home .project-mode-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 26px;
+  padding: 0 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(245, 158, 11, 0.35);
+  background: rgba(245, 158, 11, 0.1);
+  color: #b45309;
+  font: 600 11px/1 var(--ph-font-mono);
+}
+
+.project-home .project-mode-label i {
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: var(--ph-status-warn);
+}
+
+/* ==========================================================================
+   7. Implementation Scope Matrix (.project-scope) & Footer
+   ========================================================================== */
+.project-home .project-scope {
+  border-top: 1px solid var(--ph-line);
+}
+
+.project-home .project-scope-heading {
+  margin-bottom: 20px;
+}
+
+.project-home .project-scope-list {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.project-home .project-scope-row {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 20px;
+  border-radius: 9px;
+  border: 1px solid var(--ph-line);
+  background: var(--ph-surface);
+}
+
+.project-home .project-scope-index {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 22px;
+  border-radius: 4px;
+  font: 600 11px/1 var(--ph-font-mono);
+}
+
+.project-home .project-scope-index.scope-0 {
+  background: rgba(16, 185, 129, 0.12);
+  color: #047857;
+}
+
+.project-home .project-scope-index.scope-1 {
+  background: rgba(0, 82, 204, 0.1);
+  color: var(--ph-accent);
+}
+
+.project-home .project-scope-index.scope-2 {
+  background: rgba(100, 116, 139, 0.14);
+  color: var(--ph-ink-secondary);
+}
+
+.project-home .project-scope-row strong {
+  color: var(--ph-ink);
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.project-home .project-scope-row p {
+  margin: 0;
+  color: var(--ph-ink-secondary);
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.project-home .project-scope-note {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin: 16px 0 0;
+  color: var(--ph-ink-tertiary);
+  font-size: 12.5px;
+}
+
+.project-home .project-scope-note svg {
+  color: var(--ph-status-ok);
+}
+
+.project-home .project-footer {
+  width: min(1360px, calc(100% - 48px));
+  margin: 0 auto;
+  padding: 24px 0 36px;
+  border-top: 1px solid var(--ph-line);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  color: var(--ph-ink-tertiary);
+  font-size: 12.5px;
+}
+
+.project-home .project-footer a {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--ph-accent);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+/* ==========================================================================
+   8. Responsive Breakpoints
+   ========================================================================== */
+@media (max-width: 1180px) {
+  .project-home .project-hero-content {
+    grid-template-columns: minmax(280px, 0.84fr) minmax(0, 1.36fr);
+    gap: 20px;
+  }
+
+  .project-home .project-hero-tactical {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 12px;
+  }
+
+  .project-home .project-state-rail {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .project-home .project-state-rail h2 {
+    grid-column: 1 / -1;
+  }
+
+  .project-home .project-flow-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 960px) {
+  .project-home .project-header {
+    flex-wrap: wrap;
+    padding: 10px 20px;
+  }
+
+  .project-home .project-technical-mark {
+    display: none;
+  }
+
+  .project-home .project-hero-telemetry,
+  .project-home .project-hero-content,
+  .project-home .project-hero-caption,
+  .project-home .project-facts,
+  .project-home .project-section,
+  .project-home .project-workflow,
+  .project-home .project-scope,
+  .project-home .project-footer {
+    width: calc(100% - 32px);
+  }
+
+  .project-home .project-hero-telemetry {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .project-home .project-hero-content,
+  .project-home .project-section-heading,
+  .project-home .project-capabilities,
+  .project-home .project-scope-list,
+  .project-home .project-facts {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .project-home .project-fact {
+    border-right: 0;
+    border-bottom: 1px solid var(--ph-line);
+  }
+
+  .project-home .project-fact:last-child {
+    border-bottom: 0;
+  }
+}
+
+@media (max-width: 640px) {
+  .project-home .project-nav {
+    display: none;
+  }
+
+  .project-home .project-site-plan-legend,
+  .project-home .project-state-rail,
+  .project-home .project-flow-list,
+  .project-home .project-current-mode {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .project-home .project-plan-route {
+    animation: none;
+  }
+
+  .project-home *,
+  .project-home *::before,
+  .project-home *::after {
+    transition-duration: 0.01ms !important;
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "name": "inspection-operations-console",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "node ./node_modules/vite/bin/vite.js --host 0.0.0.0",
+    "build": "node ./node_modules/typescript/lib/tsc.js -b && node ./node_modules/vite/bin/vite.js build",
+    "audit": "npm audit --audit-level=moderate",
+    "test:e2e": "node ./node_modules/typescript/lib/tsc.js --noEmit -p tsconfig.e2e.json && node ./node_modules/@playwright/test/cli.js test",
+    "test:demo": "node ./node_modules/typescript/lib/tsc.js --noEmit -p tsconfig.e2e.json && node ./node_modules/@playwright/test/cli.js test --config=playwright.local-demo-v38.config.ts",
+    "preview": "node ./node_modules/vite/bin/vite.js preview --host 0.0.0.0"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.57.0",
+    "@types/three": "^0.180.0",
+    "lucide-react": "^0.468.0",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1",
+    "three": "^0.180.0"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.64.1",
+    "@types/node": "^24.3.1",
+    "@types/react": "^19.1.12",
+    "@types/react-dom": "^19.1.9",
+    "@vitejs/plugin-react": "^5.0.2",
+    "typescript": "~5.9.2",
+    "vite": "^7.1.5"
+  }
+}

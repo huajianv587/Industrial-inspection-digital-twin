@@ -1,0 +1,83 @@
+import { expect, test } from '@playwright/test'
+
+const demoRunId = process.env.LOCAL_DEMO_RUN_ID || 'RUN-V36-PRECISION-INSPECTION-REALISM'
+
+test('v36 precision scene keeps inspection detail and synchronized evidence in Chrome', async ({ page }) => {
+  const pageErrors: string[] = []
+  page.on('pageerror', (error) => pageErrors.push(error.message))
+
+  await page.goto('/')
+  await expect(page.getByText(demoRunId, { exact: true }).first()).toBeVisible()
+  await expect(page.locator('.latest-run-panel')).toContainText('10 / 10')
+  await page.getByRole('row', { name: new RegExp(demoRunId) })
+    .getByRole('button', { name: '查看任务详情' }).click()
+  await expect(page.getByRole('heading', { name: demoRunId }).last()).toBeVisible()
+
+  const scene = page.locator('.scene-viewport')
+  await expect(page.locator('.scene-camera-button')).toHaveCount(64)
+  await expect(page.locator('.scene-integrity-strip')).toContainText('已校验')
+  await expect(page.locator('.scene-telemetry-overlay')).toContainText('数字孪生联动层')
+  await expect(scene).toHaveAttribute('data-scene-overlay', 'active')
+  await expect.poll(() => page.locator('.scene-camera-preview img').evaluate((image) => {
+    const element = image as HTMLImageElement
+    return element.complete && element.naturalWidth === 768 && element.naturalHeight === 480
+  })).toBe(true)
+
+  await page.getByRole('heading', { name: '同步巡检回放' }).scrollIntoViewIfNeeded()
+  await expect(page.locator('.replay-feed-card')).toHaveCount(2)
+  await expect(page.locator('.replay-floor-plan')).toHaveAttribute('aria-label', /厂区俯视平面/)
+  await expect(page.locator('.replay-floor-boundary')).toHaveCount(1)
+  await expect(page.locator('.replay-floor-zone')).toHaveCount(5)
+  await expect(page.locator('.replay-floor-equipment-item')).toHaveCount(9)
+  await expect(page.locator('.replay-waypoint-id')).toHaveCount(10)
+  await expect(page.locator('.replay-waypoint-id').first()).toHaveText('WP 01')
+  await expect(page.locator('.replay-waypoint-coordinate')).toHaveCount(0)
+  await expect(page.locator('.replay-map-live-strip')).toContainText('当前巡检对象')
+  await expect(page.locator('.replay-current-inspection')).toHaveCount(0)
+  await expect(page.locator('.language-switch').first()).toBeVisible()
+  await expect(page.locator('.replay-floor-plan')).toHaveAttribute('data-route-planner', 'collision-safe-aisles')
+  await expect(page.locator('.replay-floor-plan')).toHaveAttribute('data-route-frame-count', '214')
+  await expect(page.locator('.replay-inspection-links line')).toHaveCount(10)
+  await expect(page.locator('.replay-route-clearance')).toHaveCount(1)
+  await expect(page.locator('.replay-route-direction-markers path')).toHaveCount(9)
+  await expect(page.locator('.replay-route-metrics')).toContainText('0.45 m')
+  await expect(page.locator('.replay-route-safety-badge')).toContainText('避障通道规划')
+  const routePointCount = (await page.locator('.replay-route-base').getAttribute('points') || '').split(' ').length
+  expect(routePointCount).toBe(214)
+  await expect(page.locator('.replay-feed-card').nth(0).locator('img')).toHaveJSProperty('naturalWidth', 512)
+  await expect(page.locator('.replay-feed-card').nth(1).locator('img')).toHaveJSProperty('naturalWidth', 512)
+  await expect(page.locator('.replay-source-badge')).toContainText('48 帧')
+  await expect(page.locator('.replay-evidence-panel')).toContainText('双路已配对')
+
+  await page.getByRole('button', { name: '回到起点' }).click()
+  await expect(page.locator('.scene-osd')).toContainText('F001 / 048')
+  await expect(page.locator('.realtime-camera-osd-bottom strong').first()).toContainText('F001 / F048')
+  await page.getByRole('button', { name: '播放机器人路线' }).click()
+  await expect(page.getByRole('button', { name: '暂停回放' })).toBeVisible()
+  await page.getByRole('button', { name: '暂停机器人路线' }).click()
+  await expect(page.getByRole('button', { name: '播放回放' })).toBeVisible()
+  const startingPose = await page.locator('.replay-pose-grid dd').first().innerText()
+  await page.getByRole('button', { name: '下一帧' }).click()
+  await expect(page.locator('.replay-pose-grid dd').first()).not.toHaveText(startingPose)
+  const sceneFrame = await page.locator('.scene-osd').innerText()
+  const replayFrame = await page.locator('.realtime-camera-osd-bottom strong').first().innerText()
+  const sceneFrameMatch = sceneFrame.match(/F(\d{3}) \/ 048/)
+  const replayFrameMatch = replayFrame.match(/F(\d{3}) \/ F048/)
+  expect(sceneFrameMatch).not.toBeNull()
+  expect(replayFrameMatch).not.toBeNull()
+  expect(replayFrameMatch?.[1]).toBe(sceneFrameMatch?.[1])
+  await expect(page.locator('.scene-telemetry-strip')).toContainText(/#\d{3}/)
+  await expect.poll(() => scene.getAttribute('data-sync-frame')).toMatch(/^\d+$/)
+  await expect(page.locator('.scene-telemetry-strip')).toContainText('已同步')
+
+  await page.getByRole('button', { name: '关闭', exact: true }).last().click()
+  await page.getByRole('button', { name: 'EN', exact: true }).first().click()
+  await expect(page.locator('html')).toHaveAttribute('lang', 'en')
+  await expect(page.getByRole('heading', { name: 'Site operations overview' })).toBeVisible()
+  await page.getByRole('row', { name: new RegExp(demoRunId) })
+    .getByRole('button', { name: 'View mission details' }).click()
+  await expect(page.getByRole('heading', { name: 'Synchronized inspection replay' })).toBeVisible()
+  await expect(page.locator('.replay-route-safety-badge')).toContainText('Collision-safe aisle planning')
+  await expect(page.getByRole('button', { name: 'Close', exact: true }).last()).toBeVisible()
+  expect(pageErrors).toEqual([])
+})

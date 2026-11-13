@@ -1,0 +1,42 @@
+{
+  "version": 1,
+  "disable_existing_loggers": false,
+  "formatters": {
+    "json": {
+      "()": "inspection_system.platform.logging_config.JsonLogFormatter"
+    }
+  },
+  "handlers": {
+    "console": {
+      "class": "logging.StreamHandler",
+      "stream": "ext://sys.stdout",
+      "formatter": "json"
+    }
+  },
+  "loggers": {
+    "inspection_system": {
+      "handlers": ["console"],
+      "level": "INFO",
+      "propagate": false
+    },
+    "uvicorn": {
+      "handlers": ["console"],
+      "level": "INFO",
+      "propagate": false
+    },
+    "uvicorn.error": {
+      "handlers": ["console"],
+      "level": "INFO",
+      "propagate": false
+    },
+    "uvicorn.access": {
+      "handlers": ["console"],
+      "level": "INFO",
+      "propagate": false
+    }
+  },
+  "root": {
+    "handlers": ["console"],
+    "level": "INFO"
+  }
+}

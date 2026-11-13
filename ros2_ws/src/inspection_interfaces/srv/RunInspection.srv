@@ -1,0 +1,7 @@
+string mission_id
+string site_id
+bool dry_run
+---
+bool accepted
+string run_id
+string message

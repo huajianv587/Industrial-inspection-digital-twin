@@ -1,0 +1,39 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "unitree-isaac-industrial-inspection"
+version = "0.1.0"
+description = "Traceable industrial inspection platform with a Slurm-backed Isaac Sim integration"
+readme = "README.md"
+requires-python = ">=3.10,<3.13"
+license = {text = "MIT"}
+authors = [{name = "Project Starter"}]
+dependencies = [
+    "alembic>=1.16,<2",
+    "boto3>=1.39,<2",
+    "fastapi>=0.116,<1",
+    "PyJWT[crypto]>=2.10,<3",
+    "psycopg[binary]>=3.2,<4",
+    "pydantic>=2.11,<3",
+    "python-multipart>=0.0.20,<1",
+    "SQLAlchemy>=2.0.41,<3",
+    "uvicorn[standard]>=0.35,<1",
+]
+
+[project.optional-dependencies]
+test = ["httpx>=0.28,<1"]
+
+[project.scripts]
+inspection-system = "inspection_system.cli:main"
+inspection-worker = "inspection_system.platform.worker_cli:main"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.uv]
+package = true

@@ -1,0 +1,25 @@
+services:
+  preflight:
+    environment:
+      EAM_ENABLED: "true"
+      EAM_API_KEY_FILE: /run/inspection-secrets/eam_api_key
+    secrets:
+      - eam_api_key
+
+  api:
+    environment:
+      EAM_ENABLED: "true"
+      EAM_API_KEY_FILE: /run/inspection-secrets/eam_api_key
+    secrets:
+      - eam_api_key
+
+  worker:
+    environment:
+      EAM_ENABLED: "true"
+      EAM_API_KEY_FILE: /run/inspection-secrets/eam_api_key
+    secrets:
+      - eam_api_key
+
+secrets:
+  eam_api_key:
+    file: ${EAM_API_KEY_SECRET_FILE:?EAM_API_KEY_SECRET_FILE is required for the EAM overlay}

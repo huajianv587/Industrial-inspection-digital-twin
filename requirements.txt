@@ -1,0 +1,3 @@
+# Runtime dependency constraints are maintained in pyproject.toml.
+# Use `uv lock` to resolve a reproducible environment from those constraints.
+-e .[test]

@@ -1,0 +1,18 @@
+{
+  "scene_id": "factory_inspection_v1",
+  "units": "meters",
+  "coordinate_frame": "world",
+  "robot_asset": {
+    "model": "Unitree Go2",
+    "asset_path": null,
+    "status": "NOT_PROVIDED",
+    "note": "Use a licensed/authorized USD asset; the current script uses a generic cuboid placeholder."
+  },
+  "sensors_to_add": [
+    {"name": "rgb_camera", "type": "RGB", "topic": "/inspection/camera/rgb"},
+    {"name": "depth_camera", "type": "Depth", "topic": "/inspection/camera/depth"},
+    {"name": "lidar", "type": "RTX_LIDAR", "topic": "/inspection/lidar/points"},
+    {"name": "imu", "type": "IMU", "topic": "/inspection/imu"}
+  ],
+  "thermal_sensor_note": "Thermal labels or pseudocolor visualization are not equivalent to calibrated radiometric temperature."
+}

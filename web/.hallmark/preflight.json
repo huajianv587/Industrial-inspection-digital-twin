@@ -1,0 +1,31 @@
+{
+  "reference": "https://github.com/Nutlope/hallmark",
+  "skill": "/tmp/hallmark-nutlope/skills/hallmark/SKILL.md",
+  "scope": "existing industrial portal and operational console",
+  "audience": "industrial inspection operators and demonstration reviewers",
+  "preserve": [
+    "business APIs, routes, simulation artifacts and mission results",
+    "Chinese/English language switch",
+    "collision-safe route planning, synchronized cameras, evidence filters, camera switching"
+  ],
+  "files": [
+    "src/styles.css",
+    "src/project-home.desktop.css",
+    "src/ProjectHome.tsx",
+    "src/App.tsx",
+    "vite.config.ts"
+  ],
+  "user_design_requirements": [
+    "cobalt and cyan industrial palette",
+    "11px uppercase operational metadata",
+    "13-14px body and table content",
+    "28px monospace KPI values",
+    "CAD grid and OSD views",
+    "desktop Chrome validation"
+  ],
+  "validation_urls": [
+    "http://127.0.0.1:5187/overview",
+    "http://127.0.0.1:5187/console"
+  ],
+  "hallmark_rule_conflicts": "User-prescribed uppercase metadata and monospace operational labels are retained. Hallmark is guidance, not a claim of full gate compliance."
+}
