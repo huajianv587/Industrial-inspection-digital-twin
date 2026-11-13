@@ -5,6 +5,10 @@ RUN npm ci
 COPY web/index.html web/tsconfig*.json web/vite.config.ts ./
 COPY web/src ./src
 COPY web/public ./public
+# ProjectHome.tsx imports repo-root JSON configs (../../configs/site.json and
+# ../../configs/industrial_site_v12.json), which resolve to /configs inside the
+# image. The web build fails with TS2307 without this copy.
+COPY configs /configs
 ARG VITE_SUPABASE_URL
 ARG VITE_SUPABASE_ANON_KEY
 ARG VITE_API_BASE_URL=/api/v1
