@@ -15,6 +15,7 @@ from typing import Any
 import mimetypes
 
 from fastapi import Depends, FastAPI, File, Header, HTTPException, Request, Response, UploadFile
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 from starlette.background import BackgroundTask
 from sqlalchemy import Engine, and_, desc, func, or_, select
@@ -176,6 +177,19 @@ def create_app(
         version="0.2.0",
         description="Mission orchestration, result provenance, and human-reviewed work orders.",
         lifespan=lifespan,
+    )
+    # The Vite frontend is served from a different Vercel domain than this
+    # API, so browser calls need CORS preflight to succeed; without it every
+    # dashboard request fails in the browser with "Failed to fetch".
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=[
+            "https://web-five-rosy-1dxmibo809.vercel.app",
+            "https://web-37bn75i47-huajian.vercel.app",
+        ],
+        allow_credentials=True,
+        allow_methods=["*"],
+        allow_headers=["*"],
     )
     app.state.settings = resolved_settings
     app.state.engine = engine
